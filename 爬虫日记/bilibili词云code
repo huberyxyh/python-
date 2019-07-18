@@ -35,3 +35,7 @@ plt.axis('off')
 #图片保存到本地
 wc.to_file('1.png')
 print('成功')
+
+
+
+
