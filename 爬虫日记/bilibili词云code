@@ -1,0 +1,37 @@
+# -*- coding:utf-8 -*-
+
+from wordcloud import WordCloud,ImageColorGenerator
+import matplotlib.pylab as plt
+import pandas as pd
+import jieba
+
+mask_img = plt.imread('1.jpg')
+#设置词云样式
+wc = WordCloud(
+	font_path='SIMYOU.TTF',
+	max_words=1000,
+	max_font_size=80,
+	mask = mask_img,
+	background_color='black', mode='RGBA',
+	random_state=30)
+
+#读取文件内容
+br = pd.read_csv('弹幕1.csv', header=None)
+
+text = ''
+for line in br[1]:
+	text += ' '.join(jieba.cut(line, cut_all=False))
+
+#生成词云
+wc.generate_from_text(text)
+#改变字体颜色
+img_colors = ImageColorGenerator(mask_img)
+#字体颜色为背景图片的颜色
+wc.recolor(color_func= img_colors)
+#显示词云
+plt.imshow(wc)
+#关闭坐标轴
+plt.axis('off')
+#图片保存到本地
+wc.to_file('1.png')
+print('成功')
