@@ -1,1 +1,23 @@
 
+# -*- coding:utf-8 -*-
+#取哔哩哔哩网站
+#在network 找到heartbeat 寻找到cid：100688217
+#然后输入网址http://comment.bilibili.com/100688217.xml得出了此网站的所有弹幕
+
+
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+url='http://comment.bilibili.com/100688217.xml'
+html=requests.get(url).content
+
+html_data = str(html, 'utf-8')
+bs4 = BeautifulSoup(html_data, 'lxml')
+results = bs4.find_all('d')
+comments = [comment.text for comment in results]
+comments_dict = {'comments': comments}
+
+
+br = pd.DataFrame(comments_dict)
+br.to_csv('弹幕1.csv', encoding='utf-8')
