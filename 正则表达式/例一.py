@@ -27,6 +27,10 @@ content = 'hello 1234657 World_this is a xyh'
 result = re.match('^hello\s(\d+)\sWorld',content)
 print(result)
 print(result.group(1))
+
+#<_sre.SRE_Match object; span=(0, 19), match='hello 1234657 World'>
+#1234657
+
 #出现空白就用\s匹配 出现数字就用\d匹配
 #有一个万能的匹配方法 就是 *
 # . 可以匹配任意字符 * 代表匹配前面的字符无限次
@@ -35,6 +39,11 @@ result1 = re.match('^hello.*$',content)
 print(result1)
 print(result1.group())
 print(result1.span())
+
+#<_sre.SRE_Match object; span=(0, 33), match='hello 1234657 World_this is a xyh'>
+#hello 1234657 World_this is a xyh
+#(0, 33)
+
 #----------通用匹配------------
 
 
@@ -43,6 +52,10 @@ print(result1.span())
 result2 = re.match('^he.*(\d+).*',content)
 print(result2)
 print(result2.group(1)) #输出结果是 7
+
+#<_sre.SRE_Match object; span=(0, 33), match='hello 1234657 World_this is a xyh'>
+#7
+
 #--------贪婪匹配与非贪婪匹配----------
 #贪婪匹配下，*会匹配尽可能多的字符
 #在表达式中 ，*  后面 \d+  也就是至少一个数字 并没有指定具体多少个数字
@@ -54,6 +67,10 @@ result3 = re.match('^he.*?(\d+).*',content)
 print(result3)
 print(result3.group(1))
 
+#<_sre.SRE_Match object; span=(0, 33), match='hello 1234657 World_this is a xyh'>
+#1234657
+
+
 #贪婪匹配是尽可能匹配多的字符
 #非贪婪匹配是尽可能匹配到少的字符
 
@@ -63,6 +80,11 @@ rexyh1 = re.match('^http.*?comment/(.*)',content1)
 print('rexyh',rexyh.group(1))
 print('rexyh1',rexyh1.group(1))
 
+
+#rexyh
+#rexyh1 xyhczq123
+
+
 #修饰符
 #正则表达式可以包含一些可选标志修饰符来控制匹配的模式
 content2 = '''hello 12345678 World_this
@@ -70,6 +92,11 @@ is a regex Demo
 '''
 reczq = re.match('^he.*?(\d+).*?Demo$',content2,re.S)
 print(reczq.group(1))
+
+#12345678
+
+
+
 #直接报错！！！！ 也就是说正侧表达时没有匹配到这个字符串
 
 #修饰符               描述
@@ -88,10 +115,15 @@ content3 = '(百度)www.baidu.com'
 rexyh2 = re.match('\(百度\)\www.baidu\.com',content3)
 print(rexyh2)
 
+
+#<_sre.SRE_Match object; span=(0, 17), match='(百度)www.baidu.com'>
+
 #search()
 content4 = 'extra stings hello 1234567 world_this is xyh'
 result4 = re.match('^hello.*?(\d+).*?xyh',content4)
 print(result4)
+
+#None
 #字符串以extra开头 正则表达式以hello开头 整个正则表达式是字符串一部分  但是匹配失败
 #match()更适合用来检测某个字符串是否符合某个正则表达式的规则
 #search（） 匹配是会扫描整个字符串，返回第一个成功匹配结果
@@ -99,6 +131,7 @@ print(result4)
 #直到找到第一个符合规则的字符串 然后返回匹配内容
 result5 = re.search('^hello.*?(\d+).*?xyh',content4)
 print(result5)
+
 
 html = '''<div id="songs-list">
 <h2 class="title">经典老歌</h2）
@@ -133,6 +166,13 @@ html = '''<div id="songs-list">
 result6 = re.search('<li.*?active.*?singer="(.*?)">(.*?)</a>',html,re.S)
 if result6:
     print(result6.group(1),result6.group(2))
+#  齐秦 往事随风 
+
+
+
+
+
+
 #结果就是class为active的li节点内部的超链接包含的歌手歌名
 
 #result6 = re.search('<li.*?singer="(.*?)">(.*?)</a>',html,re.S)
@@ -153,6 +193,20 @@ print(type(result7))
 for res in result7:
     print(res)
     print(res[0],res[1],res[2])
+    
+    
+##[('/2.mp3', '任贤齐', '沧海一声笑'), ('/3.mp3', '齐秦', '往事随风'), ('/4.mp3', 'beyond', '光辉岁月'), ('/5.mp3', '陈慧琳', '记事本'), ('/6.mp3', '邓丽君', '但愿人长久')]
+#<class 'list'>
+#('/2.mp3', '任贤齐', '沧海一声笑')
+#/2.mp3 任贤齐 沧海一声笑
+#('/3.mp3', '齐秦', '往事随风')
+#/3.mp3 齐秦 往事随风
+#('/4.mp3', 'beyond', '光辉岁月')
+#/4.mp3 beyond 光辉岁月
+#('/5.mp3', '陈慧琳', '记事本')
+#/5.mp3 陈慧琳 记事本
+#('/6.mp3', '邓丽君', '但愿人长久')
+#/6.mp3 邓丽君 但愿人长久
 
 
 
@@ -164,6 +218,11 @@ cc='54a48de789rvx45sdsdf48wefwef4234fsdf5qw4d8wef'
 ccs=re.sub('\d+', '', cc)
 print(ccs)
 
+
+
+#adervxsdsdfwefweffsdfqwdwef
+
+
 #这里只需要给第一个参数传入\d+来匹配所有的数字，第二个参数为替换成字符串
 
 #提取歌单 用sub（）方法更加简便
@@ -173,4 +232,9 @@ czq = re.findall('<li.*?>(.*?)</li>',xyh,re.S)
 print(czq)
 for czqs in czq:
     print(czqs.strip())
+    
+
+    
+    
+    
 #a节点经过sub（）方法处理过后就没有了 ，然后再通过findall（）方法直接提取即可
